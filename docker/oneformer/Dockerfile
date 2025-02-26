@@ -51,7 +51,7 @@ RUN git clone https://github.com/Karbo123/segmentator.git \
     && cd ../../..
 
 # Install remaining python packages
-RUN pip install --no-deps  --retries 5 -i https://mirrors.aliyun.com/pypi/simple/\
+RUN pip install --no-deps  --retries 5 \
     spconv-cu117==2.3.6 \
     addict==2.4.0 \
     yapf==0.33.0 \

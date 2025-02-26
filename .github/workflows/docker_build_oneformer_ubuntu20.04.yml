@@ -18,7 +18,7 @@ env:
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'docker/oneformer/**'
       - '.github/workflows/docker_build_oneformer_ubuntu20.04.yml'
