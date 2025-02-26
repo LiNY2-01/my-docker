@@ -20,7 +20,7 @@ on:
     branches:
       - main
     paths:
-      - 'docker/ubuntu/**'
+      - 'docker/oneformer/**'
       - '.github/workflows/docker_build_onformer_ubuntu20.04.yml'
 
 jobs:
@@ -33,7 +33,7 @@ jobs:
         run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build docker image
-        run: docker build . docker/oneformer/Dockerfile -t torch-docker/oneformer:${IMAGE_TAG} && docker tag torch-docker/pytorch:${IMAGE_TAG} ${{ secrets.DOCKER_USERNAME }}/oneformer:${IMAGE_TAG}
+        run: docker build . -f docker/oneformer/Dockerfile -t torch-docker/oneformer:${IMAGE_TAG} && docker tag torch-docker/pytorch:${IMAGE_TAG} ${{ secrets.DOCKER_USERNAME }}/oneformer:${IMAGE_TAG}
 
       - name: Push docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/oneformer:${IMAGE_TAG}

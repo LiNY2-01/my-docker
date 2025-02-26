@@ -1,9 +1,18 @@
 FROM liny2/pytorch:1.13.1-py3.10.15-cuda11.7.1-devel-ubuntu20.04
 
+# setup timezone
+ENV DEBIAN_FRONTEND=noninteractive
+RUN echo 'Etc/UTC' > /etc/timezone && \
+    apt-get update && \
+    apt-get install -q -y --no-install-recommends tzdata && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub \
     && apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub \
     && apt-get update \
-    && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
+    && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 \
+    && rm -rf /var/lib/apt/lists/*
+
 
 # Install OpenMMLab projects
 RUN pip install --no-deps \
@@ -16,11 +25,12 @@ RUN pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu117/to
 # Install MinkowskiEngine
 # Feel free to skip nvidia-cuda-dev if minkowski installation is fine
 RUN apt-get update \
-    && apt-get -y install libopenblas-dev nvidia-cuda-dev  -o Acquire::Retries=5
-RUN TORCH_CUDA_ARCH_LIST="8.6 8.9" \
+    && apt-get -y install libopenblas-dev   -o Acquire::Retries=5
+RUN TORCH_CUDA_ARCH_LIST="7.0 8.6" \
     pip install git+https://github.com/NVIDIA/MinkowskiEngine.git@02fc608bea4c0549b0a7b00ca1bf15dee4a0b228 -v --no-deps \
-    --install-option="--blas=openblas" \
-    --install-option="--force_cuda"
+    --config-settings="--build-option=--blas=openblas" \
+    --config-settings="--build-option=--force_cuda" \
+    --no-build-isolation
 
 # Install torch-scatter 
 RUN pip install torch-scatter==2.1.2  torch_cluster -f https://data.pyg.org/whl/torch-1.13.1+cu117.html --no-deps
@@ -125,5 +135,5 @@ ENV ROS_DISTRO noetic
 
 # install ros packages
 RUN apt-get update && apt-get install -o Acquire::Retries=10 -y --no-install-recommends \
-    ros-noetic-ros-core=1.5.0-1*  build-essential\
+    ros-noetic-ros-core  build-essential\
     && rm -rf /var/lib/apt/lists/*
