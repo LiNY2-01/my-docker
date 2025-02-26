@@ -33,7 +33,7 @@ RUN TORCH_CUDA_ARCH_LIST="7.0 8.6" \
     --no-build-isolation
 
 # Install torch-scatter 
-RUN pip install torch-scatter==2.1.2  torch_cluster -f https://data.pyg.org/whl/torch-1.13.1+cu117.html --no-deps
+RUN pip install pyg_lib torch-scatter==2.1.1  torch_cluster==1.6.1 -f https://data.pyg.org/whl/torch-1.13.1+cu117.html --no-deps
 
 # Install ScanNet superpoint segmentator
 RUN git clone https://github.com/Karbo123/segmentator.git \
@@ -99,11 +99,9 @@ RUN pip install --no-deps  --retries 5 \
     zipp==3.17.0 \
     h5py \
     torchmetrics==0.11.4 \
-    pyg_lib \
     pgeof \
     omegaconf \
     colorhash \
-    hydra \
     hydra-core \
     hydra-colorlog \
     pytorch-lightning==2.2 
