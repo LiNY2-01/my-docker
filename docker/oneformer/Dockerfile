@@ -50,6 +50,27 @@ RUN git clone https://github.com/Karbo123/segmentator.git \
     && make install \
     && cd ../../..
 
+WORKDIR /workspace
+
+COPY setup_dependencies.py /workspace/setup_dependencies.py
+
+WORKDIR /workspace/dependencies
+
+RUN git clone --recursive https://github.com/lxxue/FRNN.git FRNN \
+    && cd FRNN/external/prefix_sum \
+    && TORCH_CUDA_ARCH_LIST="7.0 8.6" python setup.py install \
+    && cd ../../ \
+    && TORCH_CUDA_ARCH_LIST="7.0 8.6" python setup.py install \
+    && cd .. 
+
+RUN pip install git+https://github.com/drprojects/point_geometric_features.git 
+
+RUN  git clone https://gitlab.com/1a7r0ch3/parallel-cut-pursuit.git parallel_cut_pursuit \
+    && git clone https://gitlab.com/1a7r0ch3/grid-graph.git grid_graph \
+    && cd ../ && python setup_dependencies.py build_ext --parallel=$(nproc) 
+
+
+
 # Install remaining python packages
 RUN pip install --no-deps  --retries 5 \
     spconv-cu117==2.3.6 \
