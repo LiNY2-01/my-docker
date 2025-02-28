@@ -128,13 +128,13 @@ RUN pip install \
     torchmetrics==0.11.4 \
     pgeof==0.3.2 \
     omegaconf==2.3.0 \
-    colorhash==2.0.0\
-    hydra-core==1.3.2\
-    hydra-colorlog=1.2.0 \
+    colorhash==2.0.0 \
+    hydra-core==1.3.2 \
+    hydra-colorlog==1.2.0 \
     pytorch-lightning==2.2 \
     six==1.17.0 \
-    torch_geometric==2.3.0  \
-    antlr4-python3-runtime==4.9.3 \ 
+    torch_geometric==2.3.0 \
+    antlr4-python3-runtime==4.9.3 \
     && rm -rf /root/.cache/pip 
 
 
