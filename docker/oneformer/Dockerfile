@@ -19,8 +19,11 @@ RUN pip install --no-deps \
     mmengine==0.7.3 \
     mmdet==3.0.0 \
     mmsegmentation==1.0.0 \
-    git+https://github.com/open-mmlab/mmdetection3d.git@22aaa47fdb53ce1870ff92cb7e3f96ae38d17f61
-RUN pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu117/torch1.13.0/index.html --no-deps
+    git+https://github.com/open-mmlab/mmdetection3d.git@22aaa47fdb53ce1870ff92cb7e3f96ae38d17f61 \
+    && rm -rf /root/.cache/pip
+    
+RUN pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu117/torch1.13.0/index.html --no-deps \
+    && rm -rf /root/.cache/pip
 
 # Install MinkowskiEngine
 # Feel free to skip nvidia-cuda-dev if minkowski installation is fine
@@ -125,7 +128,8 @@ RUN pip install --no-deps  --retries 5 \
     colorhash \
     hydra-core \
     hydra-colorlog \
-    pytorch-lightning==2.2 
+    pytorch-lightning==2.2 \
+    && rm -rf /root/.cache/pip 
 
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
